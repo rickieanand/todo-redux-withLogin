@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import './App.css';
+
 
 class AddData extends PureComponent {
 

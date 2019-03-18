@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import List from './List'
 import AddData from './AddData'
-
+import {callApi} from './ActionCreators'
 
 class ToDoMain extends Component {
 
@@ -15,7 +15,7 @@ class ToDoMain extends Component {
     
       componentDidMount(){
         // https://api.myjson.com/bins/1eud9a
-    
+        this.props.dispatch(callApi())
       }
     
       inputHandler = (event) => (

@@ -1,3 +1,5 @@
-const API_FETCH;
-const API_SUCCESS;
-const API_FAILURE;
+export const API_FETCH = 'Fetching the API'
+export const API_RECEIVE = 'Retrive data successfully from API'
+export const API_FAILURE = 'API failed to retrive data'
+export const CREATE_ITEM = 'Add a todo item'
+export const DELETE_ITEM = 'Delete an item'

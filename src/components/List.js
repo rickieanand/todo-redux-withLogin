@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 class List extends Component {
   render() {
     const {data, deleteHandler} = this.props
-    console.log('data', data)
     return (data ?
       <div className="App">
         {

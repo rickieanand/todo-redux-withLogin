@@ -23,6 +23,35 @@
   color: #61dafb;
 }
 
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-content: justify;
+    align-items: center;
+    flex-basis: 300;
+    background-color: black;
+    opacity: 0.6;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+}
+
+
+input {
+  padding: 4px 16px;
+  margin: 4px;
+}
+input.active-button {
+  background-color: gainsboro;
+  color: saddlebrown;
+  padding: 4px 16px;
+}
+
+input.active-button {
+
+  background-color: saddlebrown;
+  color: gainsboro;
+  padding: 4px 16px;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

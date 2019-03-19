@@ -51,7 +51,6 @@ class App extends Component {
       }
     
   render() {
-    console.log(this.props)
     return (
       <div>
         <AddData value={this.state.currentItem} inputHandler={this.inputHandler} submitHandler={this.submitHandler}/>
@@ -65,7 +64,6 @@ class App extends Component {
 * mapStateToProps
 */
 const mapStateToProps = state => (
-  console.log('state==>', state),
   {
   ...state,
   list: state.todoReducer && state.todoReducer.list ? state.todoReducer.list : []

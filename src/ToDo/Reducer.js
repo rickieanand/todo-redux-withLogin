@@ -1,12 +1,12 @@
-import {API_FETCH, API_RECEIVE, API_FAILURE} from './ActionTypes'
+import { API_FETCH, API_RECEIVE, API_FAILURE } from './ActionTypes'
 
 const defaultState = {
     list: [],
     isFetching: false,
     isReceived: false,
     isFailed: false
-  };
-  
+};
+
 export default (state = defaultState, action) => {
     switch (action.type) {
         case API_FETCH:

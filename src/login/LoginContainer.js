@@ -1,38 +1,150 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
+import fire from '../config/Fire';
+// import Button from '@material-ui/core/Button';
+// import TextField from '@material-ui/core/TextField';
+
+
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import { Input, TextField } from '@material-ui/core';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import '../App.css'
+const styles = theme => ({
+    main: {
+        width: 'auto',
+        display: 'block', // Fix IE 11 issue.
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,
+        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+            width: 400,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+        },
+    },
+    paper: {
+        marginTop: theme.spacing.unit * 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+    },
+    avatar: {
+        margin: theme.spacing.unit,
+        backgroundColor: theme.palette.secondary.main,
+    },
+    form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing.unit,
+    },
+    submit: {
+        marginTop: theme.spacing.unit * 3,
+    },
+});
+
 class LoginContainer extends Component {
 
-    constructor(props) {
-        super(props)
-        this.state= {
-            validUserName: true,
-            validPassword: true,
-            isLoggedIn: true
+    constructor() {
+        super()
+        this.state = {
+            email: '',
+            password: '',
+            validUserName: false,
+            validPassword: false,
+            isLoggedIn: false,
+            emailErrorText: '',
+            passwordErrorText: ''
         }
     }
 
-    getActionButtonClass = () => {
-        const {validUserName, validPassword} = this.state
-        return validUserName && validPassword ? 'active' : 'inactive'
+    changeEmailHandler = (e) => {
+        const { value } = e.currentTarget
+        this.setState({ email: value })
     }
-    
-    render = () => (
-        <>
-        {
-            this.state.isLoggedIn && <Redirect to='/App' />
 
-        }
+    changePasswordHandler = (e) => {
+        const { value } = e.currentTarget
+        this.setState({ password: value })
+    }
+
+    login = (e) => {
+        e.preventDefault();
+        fire.auth()
+            .signInWithEmailAndPassword(this.state.email, this.state.password)
+            .then((u) => {
+                u && this.setState({ isLoggedIn: true })
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    signup = (e) => {
+        e.preventDefault();
+        fire.auth()
+            .createUserWithEmailAndPassword(this.state.email, this.state.password)
+            .then((u) => {
+            })
+            .then((u) => {
+                u && this.setState({ isLoggedIn: true })
+                console.log(u)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+    render = () => {
+        const { classes } = this.props;
+
+        return (
             <div className='login-container'>
-                <form className='login-form' autoComplete='false' action='#' method='post'>
-                    <input type='text' name='username' minLength='8' maxLength='30'/>
-                    <input type='password' name='password' minLength='8'/>
-                    <input type='submit' className={this.getActionButtonClass()} value='Go' onClick={this.onSubmit} />
-                </form> 
+                <CssBaseline />
+                <Paper>
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    <ValidatorForm ref="form" onError={errors => console.log(errors)} onSubmit={this.login}>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="username">Email Address</InputLabel>
+                            <TextValidator
+                                id="username"
+                                name="username"
+                                onChange={this.changeEmailHandler}
+                                type='email'
+                                autoComplete="username"
+                                validators={['required', 'isEmail']}
+                                errorMessages={['this field is required', 'email is not valid']}
+                                autoFocus />
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="password">Password</InputLabel>
+                            <TextValidator
+                                id="password"
+                                name="password"
+                                onChange={this.changePasswordHandler}
+                                type="password"
+                                validators={['required', 'matchRegexp:^\S{10,}$]']}
+                                errorMessages={['this field is required', 'password is not valid']}
+                                autoComplete="current-password" />
+                        </FormControl>
+                        <Button type="submit" onClick={this.login} fullWidth variant="contained" color="primary" className={classes.submit}> Sign in </Button>
+                    </ValidatorForm>
+                </Paper>
             </div>
-        </>
-    )
+        )
+    }
 }
 
-export default LoginContainer
+export default withStyles(styles)(LoginContainer)

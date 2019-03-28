@@ -30,7 +30,7 @@ class ToDo extends Component {
     }
 
     logout() {
-        fire && fire.auth().signOut();
+        fire && fire.auth().currentUser && fire.auth().signOut();
     }
 
     inputHandler = (event) => (

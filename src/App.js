@@ -3,6 +3,12 @@ import ToDo from './ToDo/ToDo'
 import fire from './config/Fire'
 
 class App extends Component {
+    constructor() {
+        super()
+        this.state = {
+            user: null
+        }
+    }
 
     componentDidMount() {
         this.authListener()
@@ -13,7 +19,7 @@ class App extends Component {
             if (user) {
                 this.setState({ user })
             } else {
-                this.setState({ user: {} })
+                this.setState({ user: null })
             }
         })
     }

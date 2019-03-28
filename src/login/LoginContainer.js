@@ -1,54 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 import fire from '../config/Fire';
-// import Button from '@material-ui/core/Button';
-// import TextField from '@material-ui/core/TextField';
-
-
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import { Input, TextField } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-
+import img from '../assets/user.png'
 import '../App.css'
-const styles = theme => ({
-    main: {
-        width: 'auto',
-        display: 'block', // Fix IE 11 issue.
-        marginLeft: theme.spacing.unit * 3,
-        marginRight: theme.spacing.unit * 3,
-        [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-            width: 400,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-        },
-    },
-    paper: {
-        marginTop: theme.spacing.unit * 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
-    },
-    avatar: {
-        margin: theme.spacing.unit,
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing.unit,
-    },
-    submit: {
-        marginTop: theme.spacing.unit * 3,
-    },
-});
 
 class LoginContainer extends Component {
 
@@ -57,11 +11,7 @@ class LoginContainer extends Component {
         this.state = {
             email: '',
             password: '',
-            validUserName: false,
-            validPassword: false,
-            isLoggedIn: false,
-            emailErrorText: '',
-            passwordErrorText: ''
+            isLoggedIn: false
         }
     }
 
@@ -103,48 +53,42 @@ class LoginContainer extends Component {
     }
 
     render = () => {
-        const { classes } = this.props;
-
         return (
+            fire.auth().currentUser ? <Redirect to='/app' /> :
             <div className='login-container'>
-                <CssBaseline />
-                <Paper>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    <ValidatorForm ref="form" onError={errors => console.log(errors)} onSubmit={this.login}>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="username">Email Address</InputLabel>
-                            <TextValidator
+                    
+                    <form className='login-form' ref="form">
+                            <div className='profile-image'>
+                                <img src={img} alt='profile' />
+                            </div>
+                            <input
                                 id="username"
                                 name="username"
-                                onChange={this.changeEmailHandler}
+                                onChange = {this.changeEmailHandler}
                                 type='email'
                                 autoComplete="username"
-                                validators={['required', 'isEmail']}
-                                errorMessages={['this field is required', 'email is not valid']}
-                                autoFocus />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="password">Password</InputLabel>
-                            <TextValidator
+                                autoFocus 
+                                placeholder='Enter your email'
+                                />
+                            <input
+                                type="password"
                                 id="password"
                                 name="password"
-                                onChange={this.changePasswordHandler}
-                                type="password"
-                                validators={['required', 'matchRegexp:^\S{10,}$]']}
-                                errorMessages={['this field is required', 'password is not valid']}
-                                autoComplete="current-password" />
-                        </FormControl>
-                        <Button type="submit" onClick={this.login} fullWidth variant="contained" color="primary" className={classes.submit}> Sign in </Button>
-                    </ValidatorForm>
-                </Paper>
+                                onChange = {this.changePasswordHandler}
+                                autoComplete="current-password" 
+                                placeholder='Enter your password'
+                                />
+                            <div className='cta-container'>
+                                <div className='section'>
+                                    <div onClick={this.login} className='cta'> Sign in </div>
+                                    <div onClick={this.login} className='cta'> Sign up </div>
+                                </div>
+                                <div onClick={this.login} className='cta'> forgot ? </div>
+                            </div>
+                    </form>
             </div>
         )
     }
 }
 
-export default withStyles(styles)(LoginContainer)
+export default LoginContainer

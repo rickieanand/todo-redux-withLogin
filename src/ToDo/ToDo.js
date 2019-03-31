@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import fire from '../config/Fire';
 import List from './List'
 import AddData from './AddData'
 import { getData, receiveData, failedData } from './ActionCreator'
-
+import fire, { database, getTodo } from '../config/Fire'
 
 class ToDo extends Component {
 
@@ -13,11 +12,31 @@ class ToDo extends Component {
         super(props)
         this.state = {
             currentItem: "",
-            list: []
+            list: [`a`, `b`, `c`],
+            // list: [{
+            //     id: 0,
+            //     task: 'go to Paris',
+            //     isComplete: false
+            // }, {
+            //     id: 1,
+            //     task: 'go to Austria',
+            //     isComplete: false
+            // }, {
+            //     id: 2,
+            //     task: 'go to Germany',
+            //     isComplete: false
+            // }
+            // ]
         }
     }
 
     componentDidMount = () => {
+        getTodo()
+            .then(result => (
+                console.log('---->>>>', result.val())
+            )
+            )
+
         this.props.dispatch(getData())
         axios.get('https://api.myjson.com/bins/1eud9a')
             .then((response) => {
@@ -41,9 +60,13 @@ class ToDo extends Component {
 
     submitHandler = () => {
         const { list, currentItem } = this.state
+
         this.setState({
             list: [...list, currentItem]
         }, function () {
+            database.ref('todo/').set({
+                ...this.state.list
+            });
             this.setState({ currentItem: '' })
         })
     }

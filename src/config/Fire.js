@@ -10,3 +10,8 @@ const config = {
 }
 const fire = firebase.initializeApp(config)
 export default fire
+
+export const database = firebase.database();
+export const getTodo = () => {
+    return database.ref('/list').once('value')
+}
